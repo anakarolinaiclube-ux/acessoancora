@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>E-book: A Ciência por Trás do Método - Âncora</title>
+    <title>E-book: O Guia Definitivo - Método Âncora</title>
     
-    <!-- Importando Fonte Poppins -->
+    <!-- Importando Fontes (Poppins para UI, Lora para Leitura) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     
     <!-- Ícones -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
     <style>
-        /* --- DESIGN SYSTEM: PREMIUM HIGH-CONTRAST --- */
+        /* --- DESIGN SYSTEM: PREMIUM HIGH-CONTRAST (MÉTODO ÂNCORA) --- */
         :root {
             --bg-body: #F5F4F0;       
             --bg-card: #FFFFFF;       
@@ -28,62 +28,56 @@
             --accent-gold: #C29B62;   
             --border-color: #DCD7CD;
             
-            --radius-sm: 8px;
-            --radius-md: 16px;
-            --radius-lg: 24px;
-            --shadow-soft: 0 10px 25px -5px rgba(0,0,0,0.05);
-            
             --font-ui: 'Poppins', sans-serif;
-            --font-reading: 'Lora', serif; /* Fonte serifada para conforto na leitura */
+            --font-serif: 'Lora', serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-
+        
         body {
-            font-family: var(--font-reading);
+            font-family: var(--font-serif);
             color: var(--text-main);
             line-height: 1.8;
             background-color: var(--bg-body);
+            font-size: 17px;
             -webkit-font-smoothing: antialiased;
         }
 
-        h1, h2, h3, h4 { 
-            font-family: var(--font-ui); 
-            font-weight: 700; 
-            color: var(--bg-dark); 
-            line-height: 1.3;
-            letter-spacing: -0.5px;
-        }
-
-        /* --- HEADER --- */
+        h1, h2, h3, h4 { font-family: var(--font-ui); color: var(--bg-dark); }
+        
+        /* HEADER FIXO */
         header {
             background: var(--bg-card);
+            padding: 15px 24px;
             border-bottom: 1px solid var(--border-color);
             position: fixed;
+            width: 100%;
             top: 0;
-            width: 100%;
             z-index: 1000;
-            padding: 15px 0;
-        }
-        .container-header {
-            width: 100%;
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .logo {
+        .logo { 
             font-family: var(--font-ui);
-            font-size: 1.4rem;
-            font-weight: 800;
-            letter-spacing: -1px;
-            text-transform: uppercase;
-            color: var(--bg-dark);
+            font-size: 1.2rem; 
+            color: var(--bg-dark); 
+            font-weight: 800; 
+            letter-spacing: 1px; 
+            text-transform: uppercase; 
         }
-        .logo span { color: var(--accent-gold); font-weight: 300; }
+        .logo span { color: var(--accent-gold); font-weight: 400; }
+        .header-tag {
+            font-family: var(--font-ui);
+            font-size: 0.75rem; 
+            color: var(--text-light); 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+            margin-left: 10px;
+            padding-left: 10px;
+            border-left: 1px solid var(--border-color);
+        }
         .btn-back {
             font-family: var(--font-ui);
             font-size: 0.9rem;
@@ -97,293 +91,433 @@
         }
         .btn-back:hover { color: var(--bg-dark); }
 
-        /* --- BARRA DE PROGRESSO DE LEITURA --- */
-        .reading-progress-container {
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: transparent;
-        }
-        .reading-progress-bar {
-            height: 100%;
-            background: var(--accent-gold);
-            width: 0%;
+        /* READER LAYOUT */
+        .reader-container {
+            max-width: 1200px;
+            margin: 80px auto 40px auto;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 50px;
+            padding: 20px 24px;
         }
 
-        /* --- EBOOK LAYOUT --- */
-        .ebook-wrapper {
-            max-width: 760px; /* Largura ideal para leitura */
-            margin: 100px auto 80px;
-            padding: 40px;
-            background: var(--bg-card);
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-soft);
-            border: 1px solid var(--border-color);
-        }
-
-        .ebook-cover {
-            text-align: center;
-            margin-bottom: 50px;
-            padding-bottom: 40px;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .ebook-cover .badge {
-            display: inline-block;
+        /* SIDEBAR / TOC */
+        .sidebar {
+            position: sticky;
+            top: 100px;
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+            padding-right: 20px;
+            border-right: 1px solid var(--border-color);
             font-family: var(--font-ui);
-            font-size: 0.8rem;
+        }
+        /* Custom Scrollbar */
+        .sidebar::-webkit-scrollbar { width: 5px; }
+        .sidebar::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 5px; }
+        .sidebar::-webkit-scrollbar-thumb:hover { background: var(--accent-gold); }
+
+        .toc-title {
+            font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 2px;
-            color: var(--accent-gold);
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
-        .ebook-cover h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-        .ebook-cover p {
-            font-family: var(--font-ui);
             color: var(--text-light);
-            font-size: 1.1rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        .toc-section-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--bg-dark);
+            margin-top: 25px;
+            margin-bottom: 12px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid var(--bg-alt);
+        }
+        .toc-list { list-style: none; }
+        .toc-list li { margin-bottom: 12px; }
+        .toc-list a {
+            color: var(--text-light);
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: color 0.3s;
+            display: block;
+            line-height: 1.4;
+        }
+        .toc-list a:hover { color: var(--accent-gold); font-weight: 500; }
+        .toc-chapter-num { 
+            font-size: 0.75rem; 
+            color: var(--accent-gold); 
+            margin-right: 5px; 
+            font-weight: 700;
         }
 
-        /* --- TIPOGRAFIA DE CONTEÚDO --- */
-        .ebook-content p {
-            font-size: 1.15rem;
-            margin-bottom: 24px;
-            color: #333;
+        /* CONTENT */
+        .book-content {
+            background: var(--bg-card);
+            padding: 70px;
+            box-shadow: var(--shadow-soft);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            max-width: 800px;
         }
-        .ebook-content h2 {
-            font-size: 1.8rem;
-            margin: 50px 0 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--bg-alt);
+
+        /* TYPOGRAPHY */
+        .book-title { 
+            font-size: 3rem; 
+            text-align: center; 
+            margin-bottom: 15px; 
+            line-height: 1.1; 
+            color: var(--bg-dark); 
+            letter-spacing: -1px;
         }
-        .ebook-content h3 {
-            font-size: 1.4rem;
-            margin: 30px 0 15px;
+        .book-subtitle { 
+            text-align: center; 
+            color: var(--text-light); 
+            font-size: 1.15rem; 
+            font-style: italic; 
+            margin-bottom: 60px; 
+            font-family: var(--font-serif); 
         }
+
+        .chapter { margin-bottom: 80px; padding-top: 40px; }
+        .chapter-header { text-align: center; margin-bottom: 40px; }
+        .chapter-num { 
+            color: var(--accent-gold); 
+            font-family: var(--font-serif); 
+            font-size: 1.2rem; 
+            font-style: italic; 
+            display: block; 
+            margin-bottom: 10px;
+        }
+        .chapter h2 { font-size: 2.2rem; margin-bottom: 25px; line-height: 1.2; letter-spacing: -0.5px; }
         
-        /* Destaque Primeira Letra (Drop Cap) */
+        p { margin-bottom: 22px; color: var(--text-main); font-weight: 400; text-align: left; }
+        strong { font-weight: 600; color: var(--bg-dark); }
+        
         .drop-cap::first-letter {
             float: left;
             font-family: var(--font-ui);
-            font-size: 3.5rem;
+            font-size: 3.8rem;
             line-height: 0.8;
-            padding-right: 10px;
-            padding-top: 5px;
+            padding-right: 12px;
+            padding-top: 6px;
             color: var(--accent-gold);
             font-weight: 800;
         }
 
-        /* Caixas de Destaque */
+        /* COMPONENTS */
         .highlight-box {
             background-color: var(--bg-alt);
             padding: 30px;
-            border-radius: var(--radius-sm);
             border-left: 4px solid var(--accent-gold);
             margin: 40px 0;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+        }
+        .highlight-box h3 { 
+            font-size: 1.2rem; 
+            margin-bottom: 15px; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            color: var(--bg-dark); 
+        }
+        .highlight-box ul { list-style: none; padding: 0; }
+        .highlight-box li { 
+            position: relative; 
+            padding-left: 20px; 
+            margin-bottom: 10px; 
+            font-size: 0.95rem; 
             font-family: var(--font-ui);
-        }
-        .highlight-box h4 {
-            font-size: 1.1rem;
-            margin-bottom: 10px;
-            color: var(--bg-dark);
-        }
-        .highlight-box p {
-            margin-bottom: 0;
-            font-size: 1rem;
             color: var(--text-light);
-            line-height: 1.6;
+        }
+        .highlight-box li::before { 
+            content: "•"; 
+            color: var(--accent-gold); 
+            position: absolute; 
+            left: 0; 
+            font-weight: bold; 
+            font-size: 1.2rem;
+            top: -2px;
         }
 
-        /* Checklist / Instruções */
-        .instruction-list {
-            list-style: none;
-            margin: 30px 0;
-            padding: 0;
+        .quote {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            text-align: center;
+            font-style: italic;
+            color: var(--bg-dark);
+            margin: 50px 0;
+            padding: 40px 30px;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            background: #FAFAFA;
+        }
+
+        .checklist-day {
+            margin-bottom: 25px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 25px;
             font-family: var(--font-ui);
         }
-        .instruction-list li {
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            margin-bottom: 20px;
-            background: var(--bg-body);
-            padding: 20px;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border-color);
+        .checklist-day h4 { font-size: 1.15rem; margin-bottom: 15px; color: var(--bg-dark); }
+        .check-item { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 10px; font-size: 0.95rem; color: var(--text-light); }
+        .check-box { 
+            width: 20px; 
+            height: 20px; 
+            border: 2px solid var(--accent-gold); 
+            border-radius: 4px; 
+            flex-shrink: 0; 
+            margin-top: 2px; 
+            background: #fff;
         }
-        .instruction-list i {
-            font-size: 1.5rem;
-            color: var(--accent-gold);
-            margin-top: 2px;
-        }
-        .instruction-list h4 { margin-bottom: 5px; font-size: 1.05rem; }
-        .instruction-list p { margin: 0; font-size: 0.95rem; color: var(--text-light); font-family: var(--font-reading); }
 
-        /* Botão Final */
-        .btn-finish {
-            display: block;
-            text-align: center;
+        .btn-action {
+            display: inline-block;
             background-color: var(--bg-dark);
             color: var(--text-inverse);
-            padding: 18px 30px;
+            padding: 15px 30px;
             border-radius: var(--radius-sm);
             font-family: var(--font-ui);
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             text-decoration: none;
-            margin-top: 50px;
             transition: all 0.3s ease;
+            margin-top: 20px;
         }
-        .btn-finish:hover {
+        .btn-action:hover {
             background-color: var(--accent-gold);
             color: var(--bg-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(194, 155, 98, 0.2);
+            transform: translateY(-2px);
         }
 
-        /* --- MEDIA QUERIES --- */
-        @media (max-width: 768px) {
-            .ebook-wrapper {
-                margin: 90px 20px 40px;
-                padding: 30px 20px;
+        /* MOBILE */
+        @media (max-width: 900px) {
+            .reader-container { grid-template-columns: 1fr; padding: 10px; margin-top: 60px; gap: 20px; }
+            .sidebar { display: none; } 
+            .book-content { padding: 40px 20px; }
+            .book-title { font-size: 2.2rem; }
+            .chapter h2 { font-size: 1.8rem; }
+            .drop-cap::first-letter { font-size: 3.2rem; }
+            
+            .mobile-toc { 
+                display: block; 
+                background: var(--bg-alt); 
+                padding: 25px; 
+                margin-bottom: 40px; 
+                border-radius: var(--radius-sm); 
+                font-family: var(--font-ui);
             }
-            .ebook-cover h1 { font-size: 2rem; }
-            .ebook-content p { font-size: 1.05rem; }
-            .ebook-content h2 { font-size: 1.5rem; }
-            .drop-cap::first-letter { font-size: 3rem; }
+            .mobile-toc h3 { font-size: 1.1rem; margin-bottom: 15px; color: var(--bg-dark); }
+            .mobile-toc ul { list-style: none; }
+            .mobile-toc a { 
+                font-size: 0.9rem; 
+                padding: 10px 0; 
+                border-bottom: 1px dashed var(--border-color); 
+                display: block; 
+                color: var(--text-light);
+                text-decoration: none;
+            }
         }
+        @media (min-width: 901px) { .mobile-toc { display: none; } }
     </style>
 </head>
 <body>
 
-    <!-- HEADER FLUTUANTE COM PROGRESSO -->
     <header>
-        <div class="container-header">
+        <div style="display: flex; align-items: center;">
             <div class="logo">ÂNCORA<span>.</span></div>
-            <!-- Botão de voltar para a página inicial -->
-            <a href="index.html" class="btn-back">
-                <i class="fas fa-arrow-left"></i> Ir para o Painel
-            </a>
+            <span class="header-tag hide-mobile">Área de Leitura</span>
         </div>
-        <div class="reading-progress-container">
-            <div class="reading-progress-bar" id="progress-bar"></div>
-        </div>
+        <a href="index.html" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Voltar ao Painel
+        </a>
     </header>
 
-    <!-- CONTEÚDO DO EBOOK -->
-    <main class="ebook-wrapper">
+    <div class="reader-container">
         
-        <div class="ebook-cover">
-            <span class="badge">Leitura Obrigatória</span>
-            <h1>A Ciência por Trás do Método Âncora</h1>
-            <p>Entenda como a dependência foi instalada no seu subconsciente e por que a força de vontade não é suficiente para se libertar.</p>
-        </div>
-
-        <div class="ebook-content">
+        <!-- SIDEBAR (ÍNDICE LATERAL) -->
+        <aside class="sidebar">
+            <div class="toc-title">Sumário</div>
             
-            <p class="drop-cap">Seja muito bem-vindo(a) à sua verdadeira jornada de libertação. Se você está lendo isso, provavelmente já tentou parar de beber antes. Talvez tenha prometido a si mesmo em uma manhã difícil de ressaca, talvez tenha evitado bares por algumas semanas, usando pura força de vontade. E, no fim, a vontade sempre venceu.</p>
-            
-            <p>A primeira coisa que você precisa entender e aceitar hoje é: <strong>a culpa não é sua, e você não é fraco.</strong> A abordagem que você estava usando é que estava errada. Tentar vencer o álcool com força de vontade é como tentar apagar um incêndio usando um copo d'água.</p>
-
-            <h2>A Mentira da Força de Vontade</h2>
-            
-            <p>A força de vontade reside na mente consciente. É a sua lógica, sua razão. É a voz que diz: <em>"Eu não deveria beber porque faz mal para minha saúde e meu bolso."</em></p>
-            
-            <p>No entanto, a vontade de beber não vem do consciente. Ela vem do subconsciente. O seu cérebro aprendeu, ao longo de meses ou anos, a associar o álcool a recompensas emocionais poderosas: alívio do estresse, confiança social, fuga do tédio ou até mesmo um "prêmio" por ter trabalhado duro a semana inteira.</p>
-
-            <div class="highlight-box">
-                <h4>O Conflito Interno</h4>
-                <p>Quando você tenta parar usando força de vontade, você cria uma guerra. Seu consciente diz "não", mas o seu subconsciente grita "sim, eu preciso disso para relaxar!". Como o subconsciente processa informações milhões de vezes mais rápido que o consciente, ele sempre vence no momento de cansaço ou estresse.</p>
-            </div>
-
-            <h2>O Que é a "Âncora Emocional"?</h2>
-
-            <p>Na psicologia e na neurociência, chamamos essa ligação profunda de <strong>Âncora Emocional</strong>. Toda vez que você se sentiu ansioso e bebeu para relaxar, seu cérebro instalou uma âncora. Toda vez que você saiu com amigos e bebeu para se enturmar, outra âncora foi fincada.</p>
-
-            <p>Hoje, você não tem um "hábito" de beber. Você tem um subconsciente que está literalmente programado para disparar um alerta de necessidade toda vez que encontra um gatilho (estresse, sexta-feira à noite, ansiedade). Para o seu cérebro primitivo, o álcool virou sinônimo de sobrevivência emocional.</p>
-
-            <p>É por isso que medicamentos falham tantas vezes: eles tratam o aspecto químico, mas deixam a âncora emocional completamente intacta.</p>
-
-            <h2>A Solução: O Estado Theta</h2>
-
-            <p>Se a âncora está no subconsciente, precisamos ir até lá para soltá-la. E é exatamente aqui que o <strong>Método Âncora</strong> age.</p>
-
-            <p>O seu cérebro opera em diferentes frequências. Quando você está acordado e alerta (agora mesmo, lendo isso), você está em estado <strong>Beta</strong>. Nesse estado, seu cérebro tem uma "parede crítica" altíssima. Se alguém disser a você "você não gosta de álcool", sua mente logo rejeita e diz "mentira, eu gosto sim".</p>
-
-            <p>Porém, quando você está quase dormindo, naquele estado de relaxamento profundo, o seu cérebro entra em frequência <strong>Theta (4 a 8 Hz)</strong>. Em Theta, a parede crítica baixa. O seu subconsciente fica aberto, altamente receptivo e moldável. É o estado natural de cura e reprogramação do corpo.</p>
-
-            <div class="highlight-box">
-                <h4>Como o Protocolo Funciona</h4>
-                <p>Os áudios do seu painel usam camadas sonoras específicas (tecnologia de arrastamento de ondas cerebrais) para induzir o seu cérebro ao estado Theta rapidamente e sem esforço. Uma vez que sua mente abaixa as defesas, as mensagens subliminares entram e começam a desatar a associação entre o álcool e o alívio. Nós reescrevemos o código fonte do problema.</p>
-            </div>
-
-            <h2>Sua Jornada de 7 Dias</h2>
-
-            <p>O protocolo que você encontra no seu painel foi estrategicamente desenhado para durar 7 dias. Não pule nenhum áudio, pois eles seguem uma ordem cronológica arquitetada para desmontar cada gatilho:</p>
-
-            <ul class="instruction-list">
-                <li>
-                    <i class="fas fa-headphones"></i>
-                    <div>
-                        <h4>Ambiente Controlado</h4>
-                        <p>Sempre ouça os áudios com fones de ouvido. As frequências são estereofônicas (binaurais) e precisam entrar pelos dois ouvidos de forma separada para alinhar os hemisférios do seu cérebro.</p>
-                    </div>
-                </li>
-                <li>
-                    <i class="fas fa-bed"></i>
-                    <div>
-                        <h4>O Momento Ideal</h4>
-                        <p>O melhor momento é logo antes de dormir ou ao acordar, quando o seu cérebro já está naturalmente flertando com o estado Theta. Evite fazer isso dirigindo ou operando máquinas pesadas.</p>
-                    </div>
-                </li>
-                <li>
-                    <i class="fas fa-brain"></i>
-                    <div>
-                        <h4>Não Faça Esforço</h4>
-                        <p>Você não precisa se esforçar para se concentrar ou "tentar" entender as mensagens escondidas no áudio. Apenas relaxe, respire e deixe o som fazer o trabalho. O seu subconsciente ouve tudo.</p>
-                    </div>
-                </li>
+            <div class="toc-section-title">FUNDAMENTOS</div>
+            <ul class="toc-list">
+                <li><a href="#intro"><span class="toc-chapter-num">00</span> Introdução</a></li>
+                <li><a href="#cap1"><span class="toc-chapter-num">01</span> A Culpa Não é Sua</a></li>
+                <li><a href="#cap2"><span class="toc-chapter-num">02</span> Frequências Theta</a></li>
+                <li><a href="#cap3"><span class="toc-chapter-num">03</span> O Respaldo Científico</a></li>
             </ul>
 
-            <h2>O Próximo Passo</h2>
+            <div class="toc-section-title">A ESTRATÉGIA</div>
+            <ul class="toc-list">
+                <li><a href="#cap4"><span class="toc-chapter-num">04</span> A Bebida como Muleta</a></li>
+                <li><a href="#cap5"><span class="toc-chapter-num">05</span> Usando o Protocolo</a></li>
+                <li><a href="#cap6"><span class="toc-chapter-num">06</span> O Mapa dos 7 Dias</a></li>
+                <li><a href="#cap7"><span class="toc-chapter-num">07</span> Recaída vs. Fracasso</a></li>
+            </ul>
+        </aside>
 
-            <p>Nos próximos dias, você vai perceber que a urgência começa a perder força. Você vai se deparar com gatilhos (como passar na frente do seu bar favorito ou ter um dia estressante de trabalho) e notar que a resposta automática de "preciso beber" simplesmente não vem com a mesma intensidade.</p>
+        <!-- CONTEÚDO DO LIVRO -->
+        <main class="book-content">
+            
+            <!-- CAPA -->
+            <div style="text-align: center; margin-bottom: 80px;">
+                <h1 class="book-title">Método Âncora</h1>
+                <p class="book-subtitle">A Ciência da Liberdade: Reprogramando a Mente para a Indiferença ao Álcool</p>
+                <div style="font-size: 2.5rem; color: var(--accent-gold); margin-top: 20px;"><i class="fas fa-brain"></i></div>
+            </div>
 
-            <p>A sensação não é de proibição ("eu não posso beber"), mas sim de indiferença ("eu não tenho vontade"). Essa é a verdadeira marca de que a âncora foi solta.</p>
+            <!-- MENU MOBILE -->
+            <div class="mobile-toc">
+                <h3>Navegação Rápida</h3>
+                <ul>
+                    <li><a href="#intro">Introdução</a></li>
+                    <li><a href="#cap1">Cap 1: A Culpa não é Sua</a></li>
+                    <li><a href="#cap2">Cap 2: Frequências Theta</a></li>
+                    <li><a href="#cap5">Cap 5: Usando o Protocolo</a></li>
+                    <li><a href="#cap6">Cap 6: Os Primeiros 7 Dias</a></li>
+                </ul>
+            </div>
 
-            <p>Agora que você entendeu o processo, você está pronto. Volte ao painel, marque este E-book como lido e prepare-se para iniciar o seu <strong>Dia 1</strong>.</p>
+            <!-- INTRODUÇÃO -->
+            <section id="intro" class="chapter" style="padding-top: 0;">
+                <div class="chapter-header">
+                    <h2>Introdução: Além da Força de Vontade</h2>
+                </div>
+                <p class="drop-cap">Você já se perguntou por que pessoas inteligentes, bem-sucedidas e disciplinadas em outras áreas da vida parecem impotentes diante de uma garrafa ou de um copo no fim do dia? A resposta é simples, mas raramente discutida: você está tentando lutar uma guerra psicológica profunda usando apenas armas conscientes.</p>
+                <p>Este guia não é sobre "prometer parar de beber". Prometer é fácil; você provavelmente já fez isso dezenas de vezes após uma manhã difícil. Este guia é sobre se tornar uma pessoa <strong>livre</strong> em sua identidade. É sobre desligar o interruptor do desejo no seu subconsciente, para que a luta e a privação deixem de ser necessárias.</p>
+                <p>O Método Âncora combina a precisão da neurociência com a profundidade do som binaural e da reprogramação mental. Relaxe. Sua liberdade começa agora.</p>
+            </section>
 
-            <a href="index.html" class="btn-finish">Entendido. Ir para o Dia 1.</a>
+            <!-- ================= PARTE I: FUNDAMENTOS ================= -->
 
-        </div>
-
-    </main>
-
-    <!-- SCRIPT DA BARRA DE PROGRESSO DE LEITURA -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const progressBar = document.getElementById('progress-bar');
-
-            // Atualiza a largura da barra baseada no scroll da página
-            window.addEventListener('scroll', () => {
-                const scrollTop = window.scrollY; // Quanto já desceu
-                const docHeight = document.body.scrollHeight; // Altura total da página
-                const winHeight = window.innerHeight; // Altura da tela atual
-                const scrollPercent = scrollTop / (docHeight - winHeight); // Porcentagem
+            <section id="cap1" class="chapter">
+                <div class="chapter-header">
+                    <span class="chapter-num">Capítulo 01</span>
+                    <h2>A Culpa Não É Sua</h2>
+                </div>
+                <p>Vamos começar quebrando o ciclo da culpa. Acreditar que você bebe porque é "fraco" ou porque não tem disciplina é a maior mentira que você pode contar a si mesmo. O álcool sequestra o sistema de recompensa do cérebro, criando uma associação direta entre beber e o alívio emocional (estresse, ansiedade, tédio).</p>
+                <p>Quando você tenta parar usando apenas a força de vontade, você cria um conflito interno exaustivo: seu consciente diz "quero parar, isso me faz mal", mas seu subconsciente grita "nós precisamos disso para relaxar e sobreviver à semana!". A força de vontade é um músculo que se cansa ao final do dia. A reprogramação mental, por outro lado, muda a própria <em>necessidade</em>.</p>
                 
-                // Limita entre 0 e 100%
-                const scrollPercentRounded = Math.min(Math.max(Math.round(scrollPercent * 100), 0), 100);
+                <div class="highlight-box">
+                    <h3><i class="fas fa-elephant"></i> O Elefante e o Condutor</h3>
+                    <p>Imagine a sua mente como um Condutor (sua mente consciente e racional) montado em um Elefante gigante (seu subconsciente e emoções). O condutor pode tentar puxar as rédeas com toda a força para evitar o bar, mas se o elefante quiser ir para lá porque está estressado, ele simplesmente irá. Nosso método não treina o condutor a puxar mais forte. Nós falamos a língua do elefante.</p>
+                </div>
+            </section>
+
+            <section id="cap2" class="chapter">
+                <div class="chapter-header">
+                    <span class="chapter-num">Capítulo 02</span>
+                    <h2>O Segredo das Frequências Theta</h2>
+                </div>
+                <p>Por que conselhos lógicos não funcionam? Porque quando você está acordado e alerta, o seu cérebro opera em estado <strong>Beta</strong>. Nesse estado, existe uma "parede crítica" altíssima. Se alguém (ou você mesmo) disser "você não gosta de álcool", essa parede rejeita a ideia imediatamente, rotulando-a como mentira.</p>
+                <p>Porém, quando você está profundamente relaxado, quase adormecendo, o cérebro desacelera e entra em frequência <strong>Theta (4 a 8 Hz)</strong>. Em Theta, essa parede crítica desmorona. O subconsciente fica exposto, aberto e altamente receptivo a novas instruções. É aqui que instalamos a indiferença.</p>
+            </section>
+
+            <section id="cap3" class="chapter">
+                <div class="chapter-header">
+                    <span class="chapter-num">Capítulo 03</span>
+                    <h2>O Respaldo Científico</h2>
+                </div>
+                <p>A ciência por trás do Método Âncora baseia-se na <strong>neuroplasticidade</strong>: a impressionante capacidade do cérebro de criar e destruir conexões neurais. Cada vez que você bebeu em resposta a um dia ruim, você asfaltou uma "estrada neural" ligando Estresse ao Álcool. O que faremos é deixar essa estrada antiga criar mato por falta de uso, enquanto pavimentamos uma nova rodovia de calma e indiferença.</p>
                 
-                progressBar.style.width = scrollPercentRounded + '%';
-            });
-        });
-    </script>
+                <div class="quote">"O cérebro subconsciente não distingue vividamente entre uma experiência real e uma experiência intensamente imaginada e sugestionada no estado correto. Nós utilizamos essa falha biológica a seu favor."</div>
+                
+                <p>É por isso que métodos baseados em reprogramação mental costumam ter taxas de sucesso superiores à abstinência forçada a seco. Eles resolvem o vazio emocional, removendo o sentimento de "privação" que causa a recaída.</p>
+            </section>
+
+            <!-- ================= PARTE II: A ESTRATÉGIA ================= -->
+
+            <section id="cap4" class="chapter">
+                <div class="chapter-header">
+                    <span class="chapter-num">Capítulo 04</span>
+                    <h2>A Bebida como Muleta Emocional</h2>
+                </div>
+                <p>Antes de apertar o play no seu primeiro áudio, precisamos que você tenha clareza do "papel" que o álcool interpreta na sua rotina. Ele nunca é apenas um líquido num copo. Ele é uma resposta a algo maior.</p>
+                
+                <div class="highlight-box">
+                    <h3><i class="fas fa-search"></i> Identifique sua Âncora</h3>
+                    <ul>
+                        <li><strong>A Âncora do Estresse:</strong> Você bebe logo após o trabalho para "desligar" a cabeça?</li>
+                        <li><strong>A Âncora Social:</strong> Você usa a bebida como lubrificante para conseguir conversar e se soltar?</li>
+                        <li><strong>A Âncora do Tédio / Solidão:</strong> A bebida preenche o vazio de um fim de semana sem planos?</li>
+                        <li><strong>A Âncora da Recompensa:</strong> "Eu trabalhei feito um condenado, mereço essa cerveja/vinho".</li>
+                    </ul>
+                </div>
+                <p>Quando você nomeia a sua âncora, ela perde o poder de agir nas sombras. Você não precisa do álcool; você precisa de descanso, de conexão ou de descompressão. O protocolo vai te ensinar a obter isso diretamente.</p>
+            </section>
+
+            <section id="cap5" class="chapter">
+                <div class="chapter-header">
+                    <span class="chapter-num">Capítulo 05</span>
+                    <h2>Como Usar o Protocolo de Áudio</h2>
+                </div>
+                <p>O painel que você acabou de acessar é a sua ferramenta de engenharia mental. Os áudios não são músicas de relaxamento; eles são códigos desenhados para agir diretamente na raiz do impulso.</p>
+                
+                <p>Para que as ondas Theta (sons binaurais) façam efeito, você deve seguir um ritual simples:</p>
+
+                <div class="highlight-box">
+                    <h3>O Ritual Diário</h3>
+                    <ul>
+                        <li><strong>Fones de Ouvido:</strong> Obrigatório. As frequências agem enviando tons ligeiramente diferentes para cada orelha.</li>
+                        <li><strong>Ambiente Seguro:</strong> Sente-se ou deite-se confortavelmente. Nunca ouça dirigindo.</li>
+                        <li><strong>Rendição:</strong> Não tente se concentrar ativamente ou analisar o que está sendo dito. Se você divagar ou até mesmo cochilar um pouco, está tudo bem. O seu subconsciente nunca dorme.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="cap6" class="chapter">
+                <div class="chapter-header">
+                    <span class="chapter-num">Capítulo 06</span>
+                    <h2>O Mapa dos Primeiros 7 Dias</h2>
+                </div>
+                <p>Alinhar expectativas é vital. Quando você reprograma a mente, a urgência cai drasticamente, mas você passará por uma transição. Veja o que esperar e como agir:</p>
+
+                <div style="margin-top: 40px;">
+                    <!-- DIAS 1-3 -->
+                    <div class="checklist-day">
+                        <h4>DIAS 1 a 3: Quebrando a Urgência</h4>
+                        <div class="check-item"><div class="check-box"></div> <div><strong>Sintoma:</strong> O corpo começa a limpar as toxinas. O sono pode ficar um pouco agitado nos primeiros 2 dias.</div></div>
+                        <div class="check-item"><div class="check-box"></div> <div><strong>Mentalidade:</strong> Seu cérebro vai testar velhos hábitos. "Que tal só um copo hoje?".</div></div>
+                        <div class="check-item"><div class="check-box"></div> <div><strong>Ação de Bloqueio:</strong> Use o <strong>Áudio SOS</strong> se sentir uma fissura muito forte. Beba muita água gelada para ativar o sistema nervoso parassimpático.</div></div>
+                    </div>
+
+                    <!-- DIAS 4-7 -->
+                    <div class="checklist-day">
+                        <h4>DIAS 4 a 7: A Recalibragem e Blindagem</h4>
+                        <div class="check-item"><div class="check-box"></div> <div><strong>Sintoma:</strong> Energia subindo. Inchaço facial diminuindo. O sono se torna profundo e altamente reparador.</div></div>
+                        <div class="check-item"><div class="check-box"></div> <div><strong>Mentalidade:</strong> A urgência some. A bebida começa a parecer algo sem graça, que não faz mais sentido na sua vida.</div></div>
+                        <div class="check-item"><div class="check-box"></div> <div><strong>Ação de Bloqueio:</strong> Mantenha o orgulho elevado. Abra a Calculadora de Economia e veja os números jogando a seu favor.</div></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="cap7" class="chapter">
+                <div class="chapter-header">
+                    <span class="chapter-num">Capítulo 07</span>
+                    <h2>Recaída Não É Fracasso</h2>
+                </div>
+                <p>Se, por algum motivo durante essa jornada (ou daqui a meses), você tiver um deslize e beber, grave isto: <strong>Você não zerou o seu progresso.</strong></p>
+                <p>O pensamento absolutista de "tudo ou nada" é o que faz as pessoas desistirem e voltarem à estaca zero. Se você está aprendendo a andar de bicicleta e cai, você não desaprende a pedalar. Um deslize não é um fracasso moral, é apenas <strong>um dado</strong>.</p>
+                <p>Se acontecer, não se culpe. Aja como um cientista. Pergunte-se: "O que gerou isso? Foi um nível de estresse que não soube lidar? Foi pressão social?". Identifique a falha, volte ao seu painel, zere o seu Contador de Sobriedade com orgulho de estar tentando, e dê o play no Dia 1 novamente.</p>
+                <p>A liberdade não é uma linha reta; ela é uma construção contínua.</p>
+            </section>
+
+            <!-- ENCERRAMENTO -->
+            <div style="text-align: center; margin-top: 80px;">
+                <p style="font-size: 1.15rem; color: var(--text-light);">O subconsciente já está pronto. Agora, basta dar o primeiro passo.</p>
+                <h3 style="font-family: var(--font-serif); font-size: 2.2rem; color: var(--accent-gold); margin-top: 15px; font-style: italic;">Solte a âncora.</h3>
+                
+                <a href="index.html" class="btn-action" style="margin-top: 40px;">Entendido. Ir para o Dia 1.</a>
+
+                <div style="margin-top: 50px; border-top: 1px solid var(--border-color); padding-top: 20px; font-size: 0.85rem; color: var(--text-light); font-family: var(--font-ui);">
+                    &copy; 2026 Método Âncora. Todos os direitos reservados.
+                </div>
+            </div>
+
+        </main>
+    </div>
+
 </body>
 </html>
