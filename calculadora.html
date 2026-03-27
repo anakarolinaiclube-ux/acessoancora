@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Calculadora de Economia - Método Âncora</title>
+    
+    <!-- Importando Fonte Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Ícones -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* --- DESIGN SYSTEM: PREMIUM HIGH-CONTRAST --- */
+        :root {
+            --bg-body: #F5F4F0;       
+            --bg-card: #FFFFFF;       
+            --bg-dark: #111111;       
+            --bg-alt: #EBE7DF;        
+            
+            --text-main: #111111;     
+            --text-light: #5A5A58;    
+            --text-inverse: #FFFFFF;  
+            
+            --accent-black: #000000;
+            --accent-gold: #C29B62;   
+            --border-color: #DCD7CD;
+            
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --shadow-soft: 0 10px 25px -5px rgba(0,0,0,0.05);
+            --shadow-hard: 0 20px 40px rgba(0,0,0,0.15);
+            
+            --font-main: 'Poppins', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            background-color: var(--bg-body);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4 { 
+            font-family: var(--font-main); 
+            font-weight: 700; 
+            color: var(--text-main); 
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* --- HEADER --- */
+        header {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+        }
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            color: var(--bg-dark);
+        }
+        .logo span {
+            font-weight: 300;
+            color: var(--accent-gold);
+        }
+        .btn-back {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+        .btn-back:hover { color: var(--bg-dark); }
+
+        /* --- CALCULATOR LAYOUT --- */
+        .calc-wrapper {
+            padding: 60px 0 80px;
+        }
+
+        .calc-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .calc-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .calc-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* CARD PRINCIPAL */
+        .calc-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-hard);
+            padding: 50px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* LADO ESQUERDO: INPUTS */
+        .input-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .input-group {
+            margin-bottom: 30px;
+        }
+        .input-group label {
+            display: block;
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--bg-dark);
+        }
+        .input-help {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 10px;
+            display: block;
+        }
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .input-prefix {
+            position: absolute;
+            left: 20px;
+            font-weight: 700;
+            color: var(--text-light);
+            font-size: 1.2rem;
+        }
+        .calc-input {
+            width: 100%;
+            padding: 20px 20px 20px 55px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: var(--font-main);
+            color: var(--bg-dark);
+            background: var(--bg-body);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        .calc-input:focus {
+            border-color: var(--accent-gold);
+            background: var(--bg-card);
+            box-shadow: 0 0 0 4px rgba(194, 155, 98, 0.15);
+        }
+
+        .motivation-box {
+            background: var(--bg-alt);
+            padding: 20px;
+            border-radius: var(--radius-sm);
+            border-left: 4px solid var(--accent-gold);
+        }
+        .motivation-box p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        /* LADO DIREITO: RESULTADOS */
+        .results-section {
+            background: var(--bg-dark);
+            border-radius: var(--radius-md);
+            padding: 40px;
+            color: var(--text-inverse);
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+        .results-section::after {
+            content: '\f0d6'; /* Ícone de dinheiro */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: -20px;
+            bottom: -20px;
+            font-size: 12rem;
+            color: rgba(255,255,255,0.02);
+            pointer-events: none;
+        }
+
+        .result-item {
+            position: relative;
+            z-index: 2;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .result-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .result-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .result-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--accent-gold);
+            line-height: 1;
+            transition: color 0.3s ease;
+        }
+        
+        /* Destaque para o último item (10 anos) */
+        .result-item.highlight .result-value {
+            font-size: 3rem;
+            color: var(--text-inverse);
+            text-shadow: 0 0 20px rgba(194, 155, 98, 0.4);
+        }
+        .result-item.highlight .result-label {
+            color: var(--accent-gold);
+        }
+
+        /* --- MEDIA QUERIES --- */
+        @media (max-width: 768px) {
+            .calc-card {
+                grid-template-columns: 1fr;
+                padding: 30px 20px;
+                gap: 40px;
+            }
+            .calc-header h1 { font-size: 2rem; }
+            .results-section { padding: 30px 20px; }
+            .result-value { font-size: 1.8rem; }
+            .result-item.highlight .result-value { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="container header-inner">
+            <div class="logo">ÂNCORA<span>.</span></div>
+            <!-- O link abaixo pode voltar para a tela principal (index.html) -->
+            <a href="index.html" class="btn-back">
+                <i class="fas fa-arrow-left"></i> Voltar ao Painel
+            </a>
+        </div>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="calc-wrapper container">
+
+        <div class="calc-header">
+            <h1>O Preço da Âncora</h1>
+            <p>Descubra exatamente quanto dinheiro você recupera ao retomar o controle da sua vida e abandonar o álcool.</p>
+        </div>
+
+        <div class="calc-card">
+            
+            <!-- INPUTS -->
+            <div class="input-section">
+                <div class="input-group">
+                    <label for="weekly-spend">Gasto Médio Semanal</label>
+                    <span class="input-help">Inclua bebidas no mercado, bares, distribuidoras e saídas de fim de semana.</span>
+                    <div class="input-wrapper">
+                        <span class="input-prefix">R$</span>
+                        <input type="number" id="weekly-spend" class="calc-input" placeholder="Ex: 150" min="0" step="10">
+                    </div>
+                </div>
+
+                <div class="motivation-box">
+                    <p>"O álcool cobra dois impostos invisíveis: a sua saúde e o seu bolso. Ao preencher o valor acima, observe os números ao lado crescerem. Isso não é uma promessa, é matemática. Esse dinheiro agora é seu."</p>
+                </div>
+            </div>
+
+            <!-- RESULTADOS -->
+            <div class="results-section">
+                
+                <div class="result-item">
+                    <div class="result-label">Economia em 1 Mês</div>
+                    <div class="result-value" id="res-month">R$ 0,00</div>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-label">Economia em 1 Ano</div>
+                    <div class="result-value" id="res-year">R$ 0,00</div>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-label">Economia em 5 Anos</div>
+                    <div class="result-value" id="res-5years">R$ 0,00</div>
+                </div>
+
+                <div class="result-item highlight">
+                    <div class="result-label">Sua Fortuna em 10 Anos</div>
+                    <div class="result-value" id="res-10years">R$ 0,00</div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- SCRIPT DA CALCULADORA -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputSpend = document.getElementById('weekly-spend');
+            
+            const resMonth = document.getElementById('res-month');
+            const resYear = document.getElementById('res-year');
+            const res5Years = document.getElementById('res-5years');
+            const res10Years = document.getElementById('res-10years');
+
+            // Função para formatar números para BRL (Moeda Brasileira)
+            const formatCurrency = (value) => {
+                return new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                }).format(value);
+            };
+
+            // Função que calcula e atualiza a interface
+            const calculateSavings = () => {
+                // Pega o valor digitado. Se estiver vazio ou inválido, usa 0.
+                let weeklyValue = parseFloat(inputSpend.value);
+                if (isNaN(weeklyValue) || weeklyValue < 0) {
+                    weeklyValue = 0;
+                }
+
+                // Cálculos baseados no gasto semanal
+                // (Usando 4.33 semanas por mês para maior precisão matemática)
+                const monthlyValue = weeklyValue * 4.333; 
+                const yearlyValue = weeklyValue * 52;
+                const fiveYearsValue = yearlyValue * 5;
+                const tenYearsValue = yearlyValue * 10;
+
+                // Atualiza a tela com o valor formatado
+                resMonth.textContent = formatCurrency(monthlyValue);
+                resYear.textContent = formatCurrency(yearlyValue);
+                res5Years.textContent = formatCurrency(fiveYearsValue);
+                res10Years.textContent = formatCurrency(tenYearsValue);
+            };
+
+            // Evento de "input" - atualiza em tempo real enquanto a pessoa digita
+            inputSpend.addEventListener('input', calculateSavings);
+        });
+    </script>
+
+</body>
+</html>
