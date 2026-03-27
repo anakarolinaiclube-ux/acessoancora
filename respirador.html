@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Respirador SOS - Método Âncora</title>
+    
+    <!-- Importando Fonte Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Ícones -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* --- DESIGN SYSTEM: PREMIUM HIGH-CONTRAST --- */
+        :root {
+            --bg-body: #F5F4F0;       
+            --bg-card: #FFFFFF;       
+            --bg-dark: #111111;       
+            --bg-alt: #EBE7DF;        
+            
+            --text-main: #111111;     
+            --text-light: #5A5A58;    
+            --text-inverse: #FFFFFF;  
+            
+            --accent-black: #000000;
+            --accent-gold: #C29B62;   
+            --border-color: #DCD7CD;
+            
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --shadow-soft: 0 10px 25px -5px rgba(0,0,0,0.05);
+            --shadow-hard: 0 20px 40px rgba(0,0,0,0.15);
+            
+            --font-main: 'Poppins', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            background-color: var(--bg-body);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4 { 
+            font-family: var(--font-main); 
+            font-weight: 700; 
+            color: var(--text-main); 
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* --- HEADER --- */
+        header {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+        }
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            color: var(--bg-dark);
+        }
+        .logo span {
+            font-weight: 300;
+            color: var(--accent-gold);
+        }
+        .btn-back {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+        .btn-back:hover { color: var(--bg-dark); }
+
+        /* --- LAYOUT PRINCIPAL --- */
+        .app-wrapper {
+            padding: 60px 0 80px;
+        }
+        .app-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .app-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .app-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* CARD PRINCIPAL (Modo Escuro Imersivo) */
+        .main-card {
+            background: var(--bg-dark);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-hard);
+            padding: 60px 30px;
+            text-align: center;
+            color: var(--text-inverse);
+            position: relative;
+            overflow: hidden;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- ANIMAÇÃO DE RESPIRAÇÃO --- */
+        .breather-container {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 40px;
+            z-index: 2;
+        }
+
+        /* Círculo Guia (Pulsante) */
+        .circle-guide {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--accent-gold) 0%, transparent 80%);
+            box-shadow: 0 0 50px rgba(194, 155, 98, 0.4);
+            opacity: 0.8;
+            /* A transição será controlada pelo JS */
+            transition: transform 0s, box-shadow 0s;
+            z-index: 1;
+        }
+
+        /* Anel Externo Fixo (Referência Visual) */
+        .circle-border {
+            position: absolute;
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            z-index: 0;
+        }
+
+        /* Texto Central (Inspire, Segure, Expire) */
+        .breather-text {
+            position: relative;
+            z-index: 3;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text-inverse);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Contador de Segundos */
+        .breather-timer {
+            position: relative;
+            z-index: 3;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 5px;
+        }
+
+        /* --- BOTÕES E TEXTOS --- */
+        .controls {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        .btn-action {
+            background-color: var(--accent-gold);
+            color: var(--bg-dark);
+            padding: 15px 30px;
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            width: 100%;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(194, 155, 98, 0.2);
+        }
+        .btn-action:hover {
+            transform: translateY(-3px);
+            background-color: #D4B07D;
+        }
+        .btn-action.stop {
+            background-color: transparent;
+            color: var(--text-light);
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: none;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+        .btn-action.stop:hover {
+            background-color: rgba(255,255,255,0.05);
+            color: var(--text-inverse);
+            border-color: rgba(255,255,255,0.5);
+        }
+
+        .motivational-footer {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-style: italic;
+            z-index: 2;
+            position: relative;
+        }
+
+        /* --- MEDIA QUERIES --- */
+        @media (max-width: 768px) {
+            .app-wrapper { padding: 40px 0 60px; }
+            .app-header h1 { font-size: 2rem; }
+            .main-card { padding: 40px 20px; min-height: 450px; }
+            .breather-container { width: 220px; height: 220px; }
+            .circle-border { width: 200px; height: 200px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="container header-inner">
+            <div class="logo">ÂNCORA<span>.</span></div>
+            <!-- Botão de voltar para a página inicial -->
+            <a href="index.html" class="btn-back">
+                <i class="fas fa-arrow-left"></i> Voltar ao Painel
+            </a>
+        </div>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="app-wrapper container">
+
+        <div class="app-header">
+            <h1>Respirador SOS</h1>
+            <p>A fissura (vontade forte) dura em média de 3 a 5 minutos. Use esta técnica de "4-7-8" para acalmar seu sistema nervoso e dissolver a urgência.</p>
+        </div>
+
+        <div class="main-card">
+            
+            <div class="breather-container">
+                <div class="circle-border"></div>
+                <div class="circle-guide" id="circle"></div>
+                
+                <div style="z-index: 3; display: flex; flex-direction: column; align-items: center;">
+                    <div class="breather-text" id="instruction">Pronto</div>
+                    <div class="breather-timer" id="timer">--</div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="btn-action" id="btn-start">
+                    <i class="fas fa-play" style="margin-right: 8px;"></i> Iniciar Exercício
+                </button>
+                <button class="btn-action stop" id="btn-stop" style="display: none;">
+                    Interromper
+                </button>
+            </div>
+
+            <div class="motivational-footer" id="footer-text">
+                "Você não é seus impulsos. Acompanhe o círculo e retome o controle."
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- SCRIPT DO RESPIRADOR -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnStart = document.getElementById('btn-start');
+            const btnStop = document.getElementById('btn-stop');
+            const circle = document.getElementById('circle');
+            const instruction = document.getElementById('instruction');
+            const timerDisplay = document.getElementById('timer');
+            const footerText = document.getElementById('footer-text');
+
+            let isBreathing = false;
+            let cycleInterval;
+            let countdownInterval;
+
+            // Tempos da técnica 4-7-8 (em milissegundos)
+            const INHALE_TIME = 4000;
+            const HOLD_TIME = 7000;
+            const EXHALE_TIME = 8000;
+            const TOTAL_TIME = INHALE_TIME + HOLD_TIME + EXHALE_TIME; // 19 segundos por ciclo
+
+            // Toca um pequeno timer regressivo na tela
+            const runCountdown = (seconds) => {
+                let timeLeft = seconds;
+                timerDisplay.textContent = timeLeft;
+                
+                clearInterval(countdownInterval);
+                countdownInterval = setInterval(() => {
+                    timeLeft--;
+                    if(timeLeft > 0) {
+                        timerDisplay.textContent = timeLeft;
+                    } else {
+                        clearInterval(countdownInterval);
+                    }
+                }, 1000);
+            };
+
+            // Lógica de um ciclo de respiração
+            const breathingCycle = () => {
+                if(!isBreathing) return;
+
+                // FASE 1: INSPIRAR (4s)
+                instruction.textContent = "Inspire...";
+                circle.style.transition = "transform 4s ease-in-out, opacity 4s, box-shadow 4s";
+                circle.style.transform = "scale(2)"; // Círculo cresce até o limite pontilhado
+                circle.style.opacity = "1";
+                circle.style.boxShadow = "0 0 80px rgba(194, 155, 98, 0.8)";
+                runCountdown(4);
+
+                // FASE 2: SEGURAR (7s)
+                setTimeout(() => {
+                    if(!isBreathing) return;
+                    instruction.textContent = "Segure...";
+                    circle.style.transition = "none"; // Trava o tamanho
+                    runCountdown(7);
+                }, INHALE_TIME);
+
+                // FASE 3: EXPIRAR (8s)
+                setTimeout(() => {
+                    if(!isBreathing) return;
+                    instruction.textContent = "Expire...";
+                    circle.style.transition = "transform 8s ease-in-out, opacity 8s, box-shadow 8s";
+                    circle.style.transform = "scale(1)"; // Círculo volta ao normal
+                    circle.style.opacity = "0.8";
+                    circle.style.boxShadow = "0 0 50px rgba(194, 155, 98, 0.4)";
+                    runCountdown(8);
+                }, INHALE_TIME + HOLD_TIME);
+            };
+
+            // Iniciar o exercício
+            const startBreathing = () => {
+                isBreathing = true;
+                btnStart.style.display = 'none';
+                btnStop.style.display = 'block';
+                footerText.textContent = '"Apenas foque no círculo. Deixe o pensamento sobre a bebida passar como uma nuvem."';
+                
+                // Roda o primeiro ciclo imediatamente
+                breathingCycle();
+                // Repete o ciclo
+                cycleInterval = setInterval(breathingCycle, TOTAL_TIME);
+            };
+
+            // Parar o exercício
+            const stopBreathing = () => {
+                isBreathing = false;
+                clearInterval(cycleInterval);
+                clearInterval(countdownInterval);
+                
+                // Reseta UI
+                btnStart.style.display = 'block';
+                btnStop.style.display = 'none';
+                instruction.textContent = "Pronto";
+                timerDisplay.textContent = "--";
+                footerText.textContent = '"Você não é seus impulsos. Acompanhe o círculo e retome o controle."';
+                
+                // Reseta Círculo instantaneamente
+                circle.style.transition = "transform 0.5s ease-out";
+                circle.style.transform = "scale(1)";
+                circle.style.boxShadow = "0 0 50px rgba(194, 155, 98, 0.4)";
+            };
+
+            // Event Listeners
+            btnStart.addEventListener('click', startBreathing);
+            btnStop.addEventListener('click', stopBreathing);
+        });
+    </script>
+</body>
+</html>
